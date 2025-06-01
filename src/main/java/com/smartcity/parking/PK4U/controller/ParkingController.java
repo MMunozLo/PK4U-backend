@@ -51,11 +51,10 @@ public class ParkingController {
             @RequestBody ParkingSpot updatedSpot) {
         log.info("Updating spot status for parking ID: {}, Spot ID: {}", parkingId, spotId);
         updatedSpot.setId(spotId);
-        return parkService.updateSpotStatus(parkingId, updatedSpot);
+        return parkService.updateSpotStatus(parkingId, spotId, updatedSpot.isOccupied());
     }
 
-    // controller/ParkingController.java (añadir búsqueda)
-
+    // Endpoint para buscar parkings por nombre
     @GetMapping("/search")
     public List<ParkingSearchDocument> searchParkings(@RequestParam String query) {
         return parkingSearchService.searchByName(query);

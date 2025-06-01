@@ -47,10 +47,11 @@ public class ParkingService {
     }
 
     //Actualiza el estado de una plaza de aparcamiento por su ID. Si la plaza no existe, lanza una excepción.
-    public ParkingSpot updateSpotStatus(String id, ParkingSpot updatedSpot) {
-        ParkingSpot spot = parkingSpotRepository.findById(id)
-                .orElseThrow(() -> new ParkingsNotFoundException("Plaza no encontrada con ID: " + id));
-        spot.setOccupied(updatedSpot.isOccupied());
-        return parkingSpotRepository.save(spot);
-    }
+        public ParkingSpot updateSpotStatus(String parkingId, String spotId, boolean occupied) {
+            ParkingSpot spot = parkingSpotRepository.findById(spotId)
+                    .orElseThrow(() -> new ParkingsNotFoundException("Plaza no encontrada con ID: " + spotId));
+            spot.setOccupied(occupied);
+            return parkingSpotRepository.save(spot);
+
+        }
 }
