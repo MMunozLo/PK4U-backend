@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: PK4U
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/PK4U
+server:
+  port: 8080

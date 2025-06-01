@@ -8,25 +8,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
 @Setter
-@Document(collection = "spots")
+@Document(collection = "parking_spots")
 public class ParkingSpot {
     @Id
     private String id;
     private String parkingId;
     private int level;
     private int spotNumber;
-    private boolean Occupied;
-
-    public boolean isOccupied() {
-        return Occupied;
-    }
-
-    public void setOccupied(boolean occupied) {
-        Occupied = occupied;
-    }
-
-
-
+    private boolean occupied;
 
 
 }
