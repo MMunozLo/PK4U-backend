@@ -3,6 +3,9 @@ spring:
     name: PK4U
   data:
     mongodb:
-      uri: mongodb://localhost:27017/PK4U
+      uri: mongodb+srv://pk4u_user:eH9Kiyl7QB05Fdna@pk4u-cluster.lftcpjj.mongodb.net/PK4U-cluster?retryWrites=true&w=majority&appName=PK4U-cluster
+    elasticsearch:
+      repositories:
+        enabled: false
 server:
   port: 8080
