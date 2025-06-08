@@ -5,6 +5,7 @@ import com.smartcity.parking.PK4U.model.ParkingSpot;
 import com.smartcity.parking.PK4U.service.ParkingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@ComponentScan
 @RequestMapping("/parkings")
 @Validated
 public class ParkingController {
@@ -20,6 +22,12 @@ public class ParkingController {
 
     public ParkingController(ParkingService parkService) {
         this.parkService = parkService;
+    }
+
+    @GetMapping
+    public List<Parking> getAllParkings() {
+        log.info("Fetching all parkings");
+        return parkService.getAllParkings();
     }
 
     @GetMapping("/{parkingId}")
@@ -49,6 +57,5 @@ public class ParkingController {
         updatedSpot.setId(spotId);
         return parkService.updateSpotStatus(parkingId, spotId, updatedSpot.isOccupied());
     }
-
 
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class ParkingService {
@@ -54,4 +55,22 @@ public class ParkingService {
             return parkingSpotRepository.save(spot);
 
         }
+
+    //Devuelve una lista de todos los Parkings disponibles.
+    public List<Parking> getAllParkings() {
+        return parkRepository.findAll();
+    }
+
+    public Map<Integer, Long> getAvailableSpotsPerLevel(String parkingId) {
+        List<ParkingSpot> spots = parkingSpotRepository.findByParkingId(parkingId);
+
+        // Filtrar plazas no ocupadas y agrupar por planta (level)
+        return spots.stream()
+                .filter(spot -> !spot.isOccupied())
+                .collect(Collectors.groupingBy(
+                        ParkingSpot::getLevel,
+                        Collectors.counting()
+                ));
+    }
+
 }
