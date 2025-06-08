@@ -2,8 +2,6 @@ package com.smartcity.parking.PK4U.controller;
 
 import com.smartcity.parking.PK4U.model.Parking;
 import com.smartcity.parking.PK4U.model.ParkingSpot;
-import com.smartcity.parking.PK4U.model.dto.ParkingSearchDocument;
-import com.smartcity.parking.PK4U.service.ParkingSearchService;
 import com.smartcity.parking.PK4U.service.ParkingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,11 +17,9 @@ import java.util.Map;
 public class ParkingController {
     private static final Logger log = LoggerFactory.getLogger(ParkingController.class);
     private final ParkingService parkService;
-    private final ParkingSearchService parkingSearchService;
 
-    public ParkingController(ParkingService parkService, ParkingSearchService parkingSearchService) {
+    public ParkingController(ParkingService parkService) {
         this.parkService = parkService;
-        this.parkingSearchService = parkingSearchService;
     }
 
     @GetMapping("/{parkingId}")
@@ -54,10 +50,5 @@ public class ParkingController {
         return parkService.updateSpotStatus(parkingId, spotId, updatedSpot.isOccupied());
     }
 
-    // Endpoint para buscar parkings por nombre
-    @GetMapping("/search")
-    public List<ParkingSearchDocument> searchParkings(@RequestParam String query) {
-        return parkingSearchService.searchByName(query);
-    }
 
 }
