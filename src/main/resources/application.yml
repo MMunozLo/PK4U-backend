@@ -4,5 +4,9 @@ spring:
   data:
     mongodb:
       uri: mongodb+srv://mariamunoz495:J4IvOQoTYE0mjKlM@cluster0.j63hf9r.mongodb.net/pk4u?retryWrites=true&w=majority&appName=Cluster0
+  elasticsearch:
+      uris: https://pk4u-6896670100.us-east-1.bonsaisearch.net:443
+      username: jtpjj93bw5
+      password: 4o0yn4rw1y
 server:
   port: 8080

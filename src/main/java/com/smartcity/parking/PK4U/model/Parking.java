@@ -13,11 +13,9 @@ public class Parking {
     private String id;
     private String name;
     private String address;
+    private int availableSpots;
     private double latitude;
     private double longitude;
     private int levels;
 
-    public void setName(String name) {
-        this.name = name;
-    }
 }
