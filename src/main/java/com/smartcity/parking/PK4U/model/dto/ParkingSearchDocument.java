@@ -12,5 +12,9 @@ public class ParkingSearchDocument {
     private double latitude;
     private double longitude;
     private boolean hasFreeSpots;
+    private String address;
+    private int availableSpots;
+    private int levels;
+    private double price;
 
 }

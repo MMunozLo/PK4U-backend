@@ -17,5 +17,6 @@ public class Parking {
     private double latitude;
     private double longitude;
     private int levels;
+    private double price;
 
 }
