@@ -1,18 +1,20 @@
 package com.smartcity.parking.PK4U.controller;
 
-import com.smartcity.parking.PK4U.model.Parking;
 import com.smartcity.parking.PK4U.model.ParkingSpot;
+import com.smartcity.parking.PK4U.model.dto.ParkingDetailsDTO;
 import com.smartcity.parking.PK4U.model.dto.ParkingSearchDocument;
+import com.smartcity.parking.PK4U.model.dto.ParkingSummaryDTO;
+import com.smartcity.parking.PK4U.model.dto.SpotDTO;
 import com.smartcity.parking.PK4U.service.ParkingSearchService;
 import com.smartcity.parking.PK4U.service.ParkingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @ComponentScan
@@ -26,30 +28,46 @@ public class ParkingController {
         this.parkService = parkService;
     }
 
+    // Este endpoint devuelve una lista de todos los parkings disponibles pero en formato resumido
     @GetMapping
-    public List<Parking> getAllParkings() {
+    public List<ParkingSummaryDTO> getAllParkings() {
         log.info("Fetching all parkings");
-        return parkService.getAllParkings();
+        return parkService.getAllParkingsSummary();
     }
 
+    // Este endpoint devuelve un parking concreto por su ID en formato detallado
     @GetMapping("/{parkingId}")
-    public Parking getParkingById(@PathVariable("parkingId") String parkingId) {
+    public ParkingDetailsDTO getParkingById(@PathVariable("parkingId") String parkingId) {
         log.info("Fetching parking with ID: {}", parkingId);
-        return parkService.getParkingById(parkingId);
+        return parkService.getParkingDetailsById(parkingId);
     }
 
+    // Nuevo parametro para filtrar por planta
+    // Este endpoint devuelve todas las plazas de un parking concreto, pudiendo filtrar por planta
     @GetMapping("/{parkingId}/spots")
-    public List<ParkingSpot> getParkingSpots(@PathVariable("parkingId") String parkingId) {
+    public ResponseEntity<List<SpotDTO>> getParkingSpots(
+            @PathVariable("parkingId") String parkingId,
+            @RequestParam(required = false) Integer level) {
         log.info("Fetching parking spots for parking ID: {}", parkingId);
-        return parkService.getParkingSpotsByParkingId(parkingId);
+
+        List<SpotDTO> spots;
+        if (level != null) {
+            spots = parkService.getSpotsByParkingAndLevel(parkingId, level);
+        } else {
+            spots = parkService.getAllSpotsByParking(parkingId);
+        }
+        return ResponseEntity.ok(spots);
+
+        //return parkService.getParkingSpotsByParkingId(parkingId);
     }
 
-    @GetMapping("/{parkingId}/status")
-    public Map<String, Long> getParkingStatus(@PathVariable("parkingId") String parkingId) {
-        log.info("Fetching parking status for parking ID: {}", parkingId);
-        return parkService.getParkingStatus(parkingId);
-    }
+//    @GetMapping("/{parkingId}/status")
+//    public Map<String, Long> getParkingStatus(@PathVariable("parkingId") String parkingId) {
+//        log.info("Fetching parking status for parking ID: {}", parkingId);
+//        return parkService.getParkingStatus(parkingId);
+//    }
 
+    // A este darle una vuelta cuando estemos con el Simulador
     @PutMapping("/{parkingId}/spots/{spotId}")
     public ParkingSpot updateSpotStatus(
             @PathVariable("parkingId") String parkingId,
@@ -75,6 +93,4 @@ public class ParkingController {
             return service.searchByName(query);
         }
     }
-
-
 }

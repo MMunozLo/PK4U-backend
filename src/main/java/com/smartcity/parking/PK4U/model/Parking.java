@@ -13,9 +13,11 @@ public class Parking {
     private String id;
     private String name;
     private String address;
-    private int availableSpots;
+    // private int availableSpots;
+
     private double latitude;
     private double longitude;
+    private int totalSpots;
     private int levels;
     private double price;
 
