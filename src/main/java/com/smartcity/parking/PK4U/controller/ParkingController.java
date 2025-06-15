@@ -16,7 +16,7 @@ import java.util.Map;
 
 @RestController
 @ComponentScan
-@RequestMapping("/parkings")
+@RequestMapping("api/v1/parkings")
 @Validated
 public class ParkingController {
     private static final Logger log = LoggerFactory.getLogger(ParkingController.class);
