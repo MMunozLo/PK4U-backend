@@ -8,5 +8,13 @@ spring:
       uris: https://pk4u-6896670100.us-east-1.bonsaisearch.net:443
       username: jtpjj93bw5
       password: 4o0yn4rw1y
+  rabbitmq:
+    host: leopard.lmq.cloudamqp.com
+    port: 5671
+    username: kuzfvycr
+    password: redGtbkNrTyn6Q8N36oHU1d39gXqrR7X
+    virtual-host: kuzfvycr
+    ssl:
+      enabled: true
 server:
   port: 8080
