@@ -15,8 +15,7 @@ public class ParkingDetailsDTO {
     private String id;
     private String name;
     private String address;
-    private double latitude;
-    private double longitude;
+    private CoordinatesDTO coordinates;
     private double price;
     private int totalSpots;
     private int levels;

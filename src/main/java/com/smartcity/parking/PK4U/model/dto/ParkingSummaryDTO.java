@@ -14,8 +14,7 @@ public class ParkingSummaryDTO {
     private String id;
     private String name;
     private String address;
-    private double latitude;
-    private double longitude;
+    private CoordinatesDTO coordinates;
 
     // Se necesita para el popup del mapa
     private int totalSpots;

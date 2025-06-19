@@ -3,12 +3,10 @@ package com.smartcity.parking.PK4U.service;
 import com.smartcity.parking.PK4U.exception.ParkingsNotFoundException;
 import com.smartcity.parking.PK4U.model.Parking;
 import com.smartcity.parking.PK4U.model.ParkingSpot;
-import com.smartcity.parking.PK4U.model.dto.LevelInfoDTO;
-import com.smartcity.parking.PK4U.model.dto.ParkingDetailsDTO;
-import com.smartcity.parking.PK4U.model.dto.ParkingSummaryDTO;
-import com.smartcity.parking.PK4U.model.dto.SpotDTO;
+import com.smartcity.parking.PK4U.model.dto.*;
 import com.smartcity.parking.PK4U.repository.ParkingRepository;
 import com.smartcity.parking.PK4U.repository.ParkingSpotRepository;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -45,14 +43,19 @@ public class ParkingService {
         Parking parking = parkRepository.findById(parkingId)
                 .orElseThrow(() -> new ParkingsNotFoundException("Parking no encontrado con ID: " + parkingId));
 
-        List<ParkingSpot> spots = parkingSpotRepository.findByParkingId(parkingId);
+        ObjectId parkingObjectId = new ObjectId(parkingId);
+        List<ParkingSpot> spots = parkingSpotRepository.findByParkingIdCustom(parkingObjectId);
+        log.info("Spots encontrados: {}", spots.size());
+
         return mapToParkingDetailsDTO(parking, spots);
     }
 
     // Devuelve todas las plazas de un parking como una lista de SpotDTO
     public List<SpotDTO> getAllSpotsByParking(String parkingId) {
         log.info("Fetching all spots for parking ID: {}", parkingId);
-        return parkingSpotRepository.findByParkingId(parkingId).stream()
+
+        ObjectId parkingObjectId = new ObjectId(parkingId);
+        return parkingSpotRepository.findByParkingIdCustom(parkingObjectId).stream()
                 .map(this::mapToSpotDTO)
                 .collect(Collectors.toList());
     }
@@ -61,7 +64,8 @@ public class ParkingService {
     public List<SpotDTO> getSpotsByParkingAndLevel(String parkingId, int level) {
         log.info("Fetching spots for parking ID: {} and level: {}", parkingId, level);
 
-        return parkingSpotRepository.findByParkingIdAndLevel(parkingId, level).stream()
+        ObjectId parkingObjectId = new ObjectId(parkingId);
+        return parkingSpotRepository.findByParkingIdAndLevelCustom(parkingObjectId, level).stream()
                 .map(this::mapToSpotDTO)
                 .collect(Collectors.toList());
     }
@@ -75,21 +79,27 @@ public class ParkingService {
         return parkingSpotRepository.save(spot);
     }
 
-
     /*
      * MÉTODOS PRIVADOS DE MAPEO
      */
 
     private ParkingSummaryDTO mapToParkingSummaryDTO(Parking parking) {
         // Obtenemos el número total de plazas para este parking
-        long totalSpots = parkingSpotRepository.countByParkingId(parking.getId());
+        ObjectId parkingObjectId = new ObjectId(parking.getId());
+        long totalSpots = parkingSpotRepository.countByParkingIdCustom(parkingObjectId);
+
+        //long totalSpots = parkingSpotRepository.countByParkingId(parking.getId());
+
+        CoordinatesDTO coordinates = new CoordinatesDTO(
+                parking.getLatitude(),
+                parking.getLongitude()
+        );
 
         return new ParkingSummaryDTO(
                 parking.getId(),
                 parking.getName(),
                 parking.getAddress(),
-                parking.getLatitude(),
-                parking.getLongitude(),
+                coordinates,
                 (int) totalSpots
         );
     }
@@ -105,19 +115,24 @@ public class ParkingService {
                     long freeSpots = levelSpots.stream().filter(s -> !s.isOccupied()).count();
 
                     return new LevelInfoDTO(
-                            "level_" + level, // ID único para la planta
+                            level,
+                            //"level_" + level, // ID único para la planta
                             "Planta " + level, // Nombre para mostrar
                             levelSpots.size(),
                             (int) freeSpots
                     );
                 }).collect(Collectors.toList());
 
+        CoordinatesDTO coordinates = new CoordinatesDTO(
+                parking.getLatitude(),
+                parking.getLongitude()
+        );
+
         return new ParkingDetailsDTO(
                 parking.getId(),
                 parking.getName(),
                 parking.getAddress(),
-                parking.getLatitude(),
-                parking.getLongitude(),
+                coordinates,
                 parking.getPrice(),
                 spots.size(),
                 parking.getLevels(),
@@ -130,10 +145,9 @@ public class ParkingService {
         return new SpotDTO(
                 spot.getId(),
                 spot.getParkingId(),
-                spot.getSpotNumber(),
                 spot.getLevel(),
+                spot.getSpotNumber(),
                 spot.isOccupied()
         );
     }
-
 }

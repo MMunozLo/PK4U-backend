@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LevelInfoDTO {
-    private String levelId;
+    private int levelId;
     private String levelName;
     private int spotsTotal;
 
