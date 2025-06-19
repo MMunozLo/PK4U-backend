@@ -1,6 +1,8 @@
 package com.smartcity.parking.PK4U.controller;
 
+import com.smartcity.parking.PK4U.config.RabbitConfig;
 import com.smartcity.parking.PK4U.model.ParkingSpot;
+import com.smartcity.parking.PK4U.model.ParkingSpotUpdate;
 import com.smartcity.parking.PK4U.model.dto.ParkingDetailsDTO;
 import com.smartcity.parking.PK4U.model.dto.ParkingSearchDocument;
 import com.smartcity.parking.PK4U.model.dto.ParkingSummaryDTO;
@@ -9,6 +11,7 @@ import com.smartcity.parking.PK4U.service.ParkingSearchService;
 import com.smartcity.parking.PK4U.service.ParkingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -23,9 +26,11 @@ import java.util.List;
 public class ParkingController {
     private static final Logger log = LoggerFactory.getLogger(ParkingController.class);
     private final ParkingService parkService;
+    private final RabbitTemplate rabbitTemplate;
 
-    public ParkingController(ParkingService parkService) {
+    public ParkingController(ParkingService parkService, RabbitTemplate rabbitTemplate) {
         this.parkService = parkService;
+        this.rabbitTemplate = rabbitTemplate;
     }
 
     // Este endpoint devuelve una lista de todos los parkings disponibles pero en formato resumido
@@ -61,12 +66,6 @@ public class ParkingController {
         //return parkService.getParkingSpotsByParkingId(parkingId);
     }
 
-//    @GetMapping("/{parkingId}/status")
-//    public Map<String, Long> getParkingStatus(@PathVariable("parkingId") String parkingId) {
-//        log.info("Fetching parking status for parking ID: {}", parkingId);
-//        return parkService.getParkingStatus(parkingId);
-//    }
-
     // A este darle una vuelta cuando estemos con el Simulador
     @PutMapping("/{parkingId}/spots/{spotId}")
     public ParkingSpot updateSpotStatus(
@@ -75,6 +74,14 @@ public class ParkingController {
             @RequestBody ParkingSpot updatedSpot) {
         log.info("Updating spot status for parking ID: {}, Spot ID: {}", parkingId, spotId);
         updatedSpot.setId(spotId);
+
+        // Create a ParkingSpotUpdate object
+        ParkingSpotUpdate update = new ParkingSpotUpdate(spotId, parkingId, String.valueOf(updatedSpot.getLevel()), updatedSpot.isOccupied());
+
+        // Send the update to RabbitMQ
+        log.info("Sending parking spot update to RabbitMQ: {}", update);
+        rabbitTemplate.convertAndSend(RabbitConfig.EXCHANGE, RabbitConfig.ROUTING_KEY, update);
+
         return parkService.updateSpotStatus(parkingId, spotId, updatedSpot.isOccupied());
     }
 

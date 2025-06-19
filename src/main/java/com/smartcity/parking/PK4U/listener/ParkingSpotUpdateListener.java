@@ -1,17 +1,28 @@
 package com.smartcity.parking.PK4U.listener;
 
-import com.smartcity.parking.PK4U.model.ParkingSpot;
+import com.smartcity.parking.PK4U.config.RabbitConfig;
+import com.smartcity.parking.PK4U.model.ParkingSpotUpdate;
+import com.smartcity.parking.PK4U.service.ParkingService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ParkingSpotUpdateListener {
 
-    @RabbitListener(queues = "parking.simulator.queue")
-    public void handleSimulation(ParkingSpot update) {
-        System.out.println(" Mensaje recibido: " + update);
+    private final ParkingService parkingService;
 
-        // Aquí puedes llamar a tu ParkingService para actualizar la plaza
-        //parkingService.updateSpotStatus(update.getParkingId(), update.getId(), update.isOccupied());
+    public ParkingSpotUpdateListener(ParkingService parkingService) {
+        this.parkingService = parkingService;
+    }
+
+    @RabbitListener(queues = RabbitConfig.QUEUE)
+    public void receiveMessage(ParkingSpotUpdate update) {
+        System.out.println("Recibido: " + update);
+
+        parkingService.updateSpotStatus(
+                update.getParkingId(),
+                update.getId(),
+                update.isOccupied()
+        );
     }
 }
