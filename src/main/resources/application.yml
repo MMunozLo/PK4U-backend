@@ -18,3 +18,11 @@ spring:
       enabled: true
 server:
   port: 8080
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    preferIpAddress: true
+    hostname: PK4U-backend
