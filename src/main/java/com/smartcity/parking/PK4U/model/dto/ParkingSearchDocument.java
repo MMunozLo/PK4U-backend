@@ -5,7 +5,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
-@Document(indexName = "parking_search", createIndex = true)
+@Document(indexName = "parkingsearchdocument", createIndex = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -28,7 +28,7 @@ public class ParkingSearchDocument {
     @Field(type = FieldType.Boolean, name = "hasFreeSpots")
     private Boolean hasFreeSpots;
 
-    @Field(type = FieldType.Search_As_You_Type, name = "address")
+    @Field(type = FieldType.Text, name = "address")
     private String address;
 
     @Field(type = FieldType.Integer, name = "availableSpots")
@@ -41,5 +41,3 @@ public class ParkingSearchDocument {
     private Double price;
 
 }
-
-

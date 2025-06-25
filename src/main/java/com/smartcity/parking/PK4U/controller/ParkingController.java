@@ -4,10 +4,8 @@ import com.smartcity.parking.PK4U.config.RabbitConfig;
 import com.smartcity.parking.PK4U.model.ParkingSpot;
 import com.smartcity.parking.PK4U.model.ParkingSpotUpdate;
 import com.smartcity.parking.PK4U.model.dto.ParkingDetailsDTO;
-import com.smartcity.parking.PK4U.model.dto.ParkingSearchDocument;
 import com.smartcity.parking.PK4U.model.dto.ParkingSummaryDTO;
 import com.smartcity.parking.PK4U.model.dto.SpotDTO;
-import com.smartcity.parking.PK4U.service.ParkingSearchService;
 import com.smartcity.parking.PK4U.service.ParkingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,19 +83,4 @@ public class ParkingController {
         return parkService.updateSpotStatus(parkingId, spotId, updatedSpot.isOccupied());
     }
 
-    @RestController
-    @RequestMapping("/search")
-    public static class SearchController {
-
-        private final ParkingSearchService service;
-
-        public SearchController(ParkingSearchService service) {
-            this.service = service;
-        }
-
-        @GetMapping
-        public List<ParkingSearchDocument> search(@RequestParam String query) {
-            return service.searchByName(query);
-        }
-    }
 }

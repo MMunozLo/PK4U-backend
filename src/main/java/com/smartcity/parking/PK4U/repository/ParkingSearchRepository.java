@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface ParkingSearchRepository extends ElasticsearchRepository<ParkingSearchDocument, String> {
     List<ParkingSearchDocument> findByNameContainingIgnoreCase(String name);
+
+    ParkingSearchDocument save(ParkingSearchDocument document);
 }
