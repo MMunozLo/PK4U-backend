@@ -46,7 +46,7 @@ public class ParkingSearchService {
         doc.setId(parking.getId());
         doc.setName(parking.getName());
         doc.setAddress(parking.getAddress());
-        doc.setPrice(parking.getPrice());
+        doc.setTotalSpots(parking.getTotalSpots());
         return doc;
     }
 

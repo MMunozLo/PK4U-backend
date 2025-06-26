@@ -19,25 +19,25 @@ public class ParkingSearchDocument {
     @Field(type = FieldType.Text, name = "name")
     private String name;
 
-    @Field(type = FieldType.Double, name = "latitude")
-    private Double latitude;
-
-    @Field(type = FieldType.Double, name = "longitude")
-    private Double longitude;
-
-    @Field(type = FieldType.Boolean, name = "hasFreeSpots")
-    private Boolean hasFreeSpots;
+//    @Field(type = FieldType.Double, name = "latitude")
+//    private Double latitude;
+//
+//    @Field(type = FieldType.Double, name = "longitude")
+//    private Double longitude;
+//
+//    @Field(type = FieldType.Boolean, name = "hasFreeSpots")
+//    private Boolean hasFreeSpots;
 
     @Field(type = FieldType.Text, name = "address")
     private String address;
 
-    @Field(type = FieldType.Integer, name = "availableSpots")
-    private Integer availableSpots;
+    @Field(type = FieldType.Integer, name = "totalSpots")
+    private Integer totalSpots;
 
-    @Field(type = FieldType.Integer, name = "levels")
-    private Integer levels;
-
-    @Field(type = FieldType.Double, name = "price")
-    private Double price;
+//    @Field(type = FieldType.Integer, name = "levels")
+//    private Integer levels;
+//
+//    @Field(type = FieldType.Double, name = "price")
+//    private Double price;
 
 }
