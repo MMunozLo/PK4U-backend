@@ -40,4 +40,10 @@ public class SearchController {
         return ResponseEntity.ok("Todos los parkings han sido indexados");
     }
 
+    @DeleteMapping("/delete-index")
+    public ResponseEntity<String> deleteIndex() {
+        searchService.deleteIndex();
+        return ResponseEntity.ok("Índice eliminado correctamente.");
+    }
+
 }

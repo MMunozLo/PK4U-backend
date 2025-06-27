@@ -30,6 +30,11 @@ public class ParkingSearchService {
         System.out.println("Documento indexado: " + doc);
  }
 
+    public void deleteIndex() {
+        elasticsearchOperations.indexOps(ParkingSearchDocument.class).delete();
+        System.out.println("Índice eliminado.");
+    }
+
     public List<ParkingSearchDocument> searchByName(String name) {
         Criteria criteria = new Criteria("name").contains(name.toLowerCase());
         CriteriaQuery query = new CriteriaQuery(criteria);
@@ -42,12 +47,13 @@ public class ParkingSearchService {
     }
 
     public ParkingSearchDocument convertToSearchDocument(Parking parking) {
-        ParkingSearchDocument doc = new ParkingSearchDocument();
-        doc.setId(parking.getId());
-        doc.setName(parking.getName());
-        doc.setAddress(parking.getAddress());
-        doc.setTotalSpots(parking.getTotalSpots());
-        return doc;
+        return ParkingSearchDocument.builder()
+                .id(parking.getId())
+                .name(parking.getName())
+                .address(parking.getAddress())
+                .totalSpots(parking.getTotalSpots())
+                .build();
     }
+
 
 }
