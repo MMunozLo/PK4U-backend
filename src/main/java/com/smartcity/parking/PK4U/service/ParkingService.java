@@ -86,7 +86,7 @@ public class ParkingService {
     private ParkingSummaryDTO mapToParkingSummaryDTO(Parking parking) {
         // Obtenemos el número total de plazas para este parking
         ObjectId parkingObjectId = new ObjectId(parking.getId());
-        long totalSpots = parkingSpotRepository.countByParkingIdCustom(parkingObjectId);
+        //long totalSpots = parkingSpotRepository.countByParkingIdCustom(parkingObjectId);
 
         //long totalSpots = parkingSpotRepository.countByParkingId(parking.getId());
 
@@ -100,7 +100,7 @@ public class ParkingService {
                 parking.getName(),
                 parking.getAddress(),
                 coordinates,
-                (int) totalSpots
+                parking.getTotalSpots()
         );
     }
 
