@@ -3,11 +3,13 @@ package com.smartcity.parking.PK4U.service;
 import com.smartcity.parking.PK4U.model.Parking;
 import com.smartcity.parking.PK4U.model.dto.ParkingSearchDocument;
 import com.smartcity.parking.PK4U.repository.ParkingSearchRepository;
+import org.elasticsearch.index.query.Operator;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
-import org.springframework.data.elasticsearch.core.query.Criteria;
-import org.springframework.data.elasticsearch.core.query.CriteriaQuery;
+import org.springframework.data.elasticsearch.core.query.*;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,15 +38,22 @@ public class ParkingSearchService {
     }
 
     public List<ParkingSearchDocument> searchByName(String name) {
-        Criteria criteria = new Criteria("name").contains(name.toLowerCase());
-        CriteriaQuery query = new CriteriaQuery(criteria);
-        SearchHits<ParkingSearchDocument> hits = elasticsearchOperations.search(query, ParkingSearchDocument.class);
+        Query query = new NativeSearchQueryBuilder()
+                .withQuery(QueryBuilders.matchQuery("name", name).operator(Operator.AND))
+                .build();
+
+        SearchHits<ParkingSearchDocument> hits =
+                elasticsearchOperations.search(query, ParkingSearchDocument.class);
 
         return hits.getSearchHits()
                 .stream()
-                .map(hit -> hit.getContent())
+                .map(SearchHit::getContent)
                 .collect(Collectors.toList());
     }
+
+
+
+
 
     public ParkingSearchDocument convertToSearchDocument(Parking parking) {
         return ParkingSearchDocument.builder()
