@@ -39,7 +39,8 @@ public class ParkingSearchService {
 
     public List<ParkingSearchDocument> searchByName(String name) {
         Query query = new NativeSearchQueryBuilder()
-                .withQuery(QueryBuilders.matchQuery("name", name).operator(Operator.AND))
+                .withQuery(QueryBuilders.matchQuery("name", name)
+                        .operator(Operator.AND)) // asegura que se cumplan todas las palabras
                 .build();
 
         SearchHits<ParkingSearchDocument> hits =
