@@ -25,7 +25,6 @@ To run the backend service locally, you will need to have its dependency ecosyst
 
 -   **JDK 21** (or the version specified in the `pom.xml`).
 -   **Maven** or **Gradle** for dependency management and project building.
--   **Docker** and **Docker Compose** (recommended for easily setting up dependencies).
 
 ### **1. External Dependencies** 📦
 
