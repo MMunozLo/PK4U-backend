@@ -1,13 +1,20 @@
+<!--
 <p align="center">
-  <img src="public/logo-transparent.png" alt="PK4U Logo" width="120"/> 
-  
+  <img src="public/logo-transparent.png" alt="PK4U Logo" width="120"/>   
 </p>
 
 <p align="center">
   <img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*-uckV8DOh3l0bCvqZ73zYg.png" alt="PK4U Logo" width="300"/>
 </p>
+-->
+<h1 align="center">
+  <img src="https://github.com/Jefffer/pk4u-frontend/blob/main/public/logo-transparent.png" alt="PK4U Logo" width="50"/>  
+  <span>PK4U</span>: Parking for You - Backend
+</h1>
 
-# 🅿️ PK4U: Parking for You - Backend
+<p align="center">
+  <img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*-uckV8DOh3l0bCvqZ73zYg.png" alt="java" width="220"/>
+</p>
 
 This repository contains the **Backend** of the PK4U system, the core of the application's business logic. Developed with **Java** and **Spring Boot**, this service is responsible for:
 
