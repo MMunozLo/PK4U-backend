@@ -25,7 +25,8 @@
   </p>
   <p>
     <img src="https://img.shields.io/badge/Java-21-blue.svg?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java 21"/>
-    <img src="https://img.shields.io/badge/Spring_Cloud-3-green.svg?style=for-the-badge&logo=spring&logoColor=white" alt="Spring Cloud 3"/>
+    <img src="https://img.shields.io/badge/Spring_Cloud-3-green.svg?style=for-the-badge&logo=spring&logoColor=green" alt="Spring Cloud 3"/>
+    <img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge" alt="License: MIT"/>
   </p>
 </div>
 
